@@ -1,31 +1,35 @@
+package com.company;
+
 import java.io.BufferedInputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.BitSet;
 import java.util.Scanner;
 
 class Main {
 
-	public static void main(String []args){
+	public static void main(String []args) {
 		Scanner input = new Scanner(new BufferedInputStream(System.in));
 
 		while (input.hasNextLine()) {
 			boolean jolly = true;
-			ArrayList<Integer> inputList = new ArrayList<>();
-			HashSet<Integer> readIntegers = new HashSet<>();
 			Scanner numScanner = new Scanner(input.nextLine());
+			int size = numScanner.nextInt();
 
+			int[] inputList = new int[size];
+			int index = 0;
 			while (numScanner.hasNextInt()) {
-				int nextInt = numScanner.nextInt();
-				inputList.add(nextInt);
-				readIntegers.add(nextInt);
+				inputList[index] = numScanner.nextInt();
+				index++;
 			}
 
-			for (int i = 0; i < inputList.size(); i++) {
-				if (i < inputList.size() - 1) {
-					if (!readIntegers.contains(Math.abs(inputList.get(i) - inputList.get(i+1)))) {
-						jolly = false;
-					}
+			BitSet bitSet = new BitSet(size);
+
+			for (int i = 0; i < inputList.length - 1; i++) {
+				int difference = Math.abs(inputList[i] - inputList[i+1]);
+				if (difference < 1 | difference >= size || bitSet.get(difference)) {
+					jolly = false;
+					break;
 				}
+				bitSet.set(difference);
 			}
 
 			if (jolly) {
